@@ -20,3 +20,9 @@
 # A A A A A A A ………… (List of actions to be completed where A is an action in the set of {L,R,U,D} - left, right, up, down)(d elements)
 # f f f f f f f f …………….. (fvalues of the nodes on the way to the solution from root to goal)(d+1 elements)
 # Figure 2. Output file with 12 lines.
+
+readFile = open("input.txt", "r")
+for i in range(3):
+    readFile.readline()
+
+f.close()
