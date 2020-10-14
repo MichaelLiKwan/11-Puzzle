@@ -21,57 +21,66 @@
 # f f f f f f f f …………….. (fvalues of the nodes on the way to the solution from root to goal)(d+1 elements)
 # Figure 2. Output file with 12 lines.
 
-#READ INPUT FILE ===================================================
-inputFile = open("input.txt", "r")
-initial = []
-state = []
-goal = []
-d = None
-N = None
-actions = []
-fVals = []
+def readInput(filename, initial, goal):
+    inputFile = open(filename, "r")
 
-#read first three lines as initial state
-for i in range(3):
-    initial.append(inputFile.readline().strip().split(" "))
+    #read first three lines as initial state
+    for i in range(3):
+        initial.append(inputFile.readline().strip().split(" "))
 
-#skip the fourth line, which is blank
-inputFile.readline()
+    #skip the fourth line, which is blank
+    inputFile.readline()
 
-#read last three lines as goal state
-for i in range(3):
-    goal.append(inputFile.readline().strip().split(" "))
+    #read last three lines as goal state
+    for i in range(3):
+        goal.append(inputFile.readline().strip().split(" "))
 
-inputFile.close()
-#====================================================================
+    inputFile.close()
 
-#WRITE OUTPUT FILE ===================================================
-outputFile = open("output.txt", "w")
+def writeOutput(filename, initial, goal, d, N, actions, fVals):
+    outputFile = open(filename, "w")
 
-#write initial state
-for i in range(3):
-    outputFile.write(" ".join(initial[i]))
+    #write initial state
+    for i in range(3):
+        outputFile.write(" ".join(initial[i]))
+        outputFile.write("\n")
     outputFile.write("\n")
-outputFile.write("\n")
 
-#write goal state
-for i in range(3):
-    outputFile.write(" ".join(goal[i]))
+    #write goal state
+    for i in range(3):
+        outputFile.write(" ".join(goal[i]))
+        outputFile.write("\n")
     outputFile.write("\n")
-outputFile.write("\n")
 
-#write d and N
-outputFile.write(d)
-outputFile.write("\n")
-outputFile.write(N)
-outputFile.write("\n")
+    #write d and N
+    outputFile.write(str(d))
+    outputFile.write("\n")
+    outputFile.write(str(N))
+    outputFile.write("\n")
 
-#write actions
-outputFile.write(" ".join(actions))
-outputFile.write("\n")
+    #write actions
+    for action in actions:
+        outputFile.write(str(action))
+        outputFile.write(" ")
+    outputFile.write("\n")
 
-#write fVals
-outputFile.write(" ".join(fVals))
+    #write fVals
+    for fVal in fVals:
+        outputFile.write(str(fVal))
+        outputFile.write(" ")
+    outputFile.write("\n")
 
-outputFile.close()
-#====================================================================
+    outputFile.close()
+
+def main():
+    initial = []
+    state = []
+    goal = []
+    d = 0
+    N = 0
+    actions = [1,2,3,4]
+    fVals = [1,2,3,4,5]
+    readInput("input.txt", initial, goal)
+    writeOutput("output.txt", initial, goal, d, N, actions, fVals)
+
+main()
