@@ -22,7 +22,18 @@
 # Figure 2. Output file with 12 lines.
 
 readFile = open("input.txt", "r")
-for i in range(3):
-    readFile.readline()
+state = []
+goal = []
 
-f.close()
+#read first three lines as initial state
+for i in range(3):
+    state.append(readFile.readline().strip().split(" "))
+
+#skip the fourth line, which is blank
+readFile.readline()
+
+#read last three lines as goal state
+for i in range(3):
+    goal.append(readFile.readline().strip().split(" "))
+
+readFile.close()
