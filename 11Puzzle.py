@@ -81,6 +81,19 @@ def calcManhattanDist(currState, goalState):
                         dist = dist + abs(gRow-cRow)+abs(gCol-cCol)
     return dist
 
+def stateAfterAction(state, action, blankRow, blankCol):
+    if action == "U":
+        state[blankRow][blankCol],state[blankRow-1][blankCol] = state[blankRow-1][blankCol],state[blankRow][blankCol]
+    elif action == "D":
+        state[blankRow][blankCol],state[blankRow+1][blankCol] = state[blankRow+1][blankCol],state[blankRow][blankCol]
+    elif action == "L":
+        state[blankRow][blankCol],state[blankRow][blankCol-1] = state[blankRow][blankCol-1],state[blankRow][blankCol]
+    elif action == "R":
+        state[blankRow][blankCol],state[blankRow][blankCol+1] = state[blankRow][blankCol+1],state[blankRow][blankCol]
+    else:
+        print("Invalid Action")
+    return state
+
 def solver(initial, goal, N, prioQueue, moves):
     if initial == goal:
         return (d, N, actions, fVals)
