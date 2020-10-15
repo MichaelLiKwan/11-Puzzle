@@ -20,7 +20,6 @@
 # A A A A A A A ………… (List of actions to be completed where A is an action in the set of {L,R,U,D} - left, right, up, down)(d elements)
 # f f f f f f f f …………….. (fvalues of the nodes on the way to the solution from root to goal)(d+1 elements)
 # Figure 2. Output file with 12 lines.
-
 def readInput(filename, initial, goal):
     inputFile = open(filename, "r")
 
@@ -72,10 +71,29 @@ def writeOutput(filename, initial, goal, d, N, actions, fVals):
 
     outputFile.close()
 
+def calcManhattanDist(currState, goalState):
+    dist = 0
+    for cRow in range(len(currState)):
+        for cCol in range(len(currState[0])):
+            for gRow in range(len(goalState)):
+                for gCol in range(len(goalState[0])):
+                    if currState[cRow][cCol] == goalState[gRow][gCol]:
+                        dist = dist + abs(gRow-cRow)+abs(gCol-cCol)
+    return dist
+
+def solver(initial, goal, N, prioQueue, moves):
+    if initial == goal:
+        return (d, N, actions, fVals)
+    else:
+        for move in moves:
+            if the blank space is not in the top row:
+                append the new state after moving the blank space up to the priority queue
+
 def main():
     initial = []
     state = []
     goal = []
+    moves = {"U", "D", "L", "R"}
     d = 0
     N = 0
     actions = [1,2,3,4]
