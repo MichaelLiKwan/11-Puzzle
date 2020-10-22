@@ -74,87 +74,87 @@ def stateAfterAction(state, action, blankRow, blankCol):
         print("Invalid Action")
     return state
 
-# def solver(prioQueue, seenStates, N):
-#     if len(prioQueue) == 0:
-#         return False
-#     else:
-#         node = heapq.heappop(prioQueue)
-#         fVal = node[0]
-#         state = node[1]
-#         goal = node[2]
-#         blankRow = node[3]
-#         blankCol = node[4]
-#         actions = node[5]
-#         fVals = node[6]
+def solverRecursion(prioQueue, seenStates, N):
+    if len(prioQueue) == 0:
+        return False
+    else:
+        node = heapq.heappop(prioQueue)
+        fVal = node[0]
+        state = node[1]
+        goal = node[2]
+        blankRow = node[3]
+        blankCol = node[4]
+        actions = node[5]
+        fVals = node[6]
 
-#         if state == goal:
-#             return (actions, fVals, N)
-#         else:
-#             if blankRow != 0:
-#                 stateCopy = copy.deepcopy(state)
-#                 newState = stateAfterAction(stateCopy, "U", blankRow, blankCol)
-#                 strState = str(newState)
-#                 if strState not in seenStates:
-#                     seenStates[strState] = True
-#                     hVal = calcManhattanDist(newState,goal)
-#                     newActions = copy.copy(actions)
-#                     newActions.append("U")
-#                     gVal = len(actions)
-#                     fVal = gVal + hVal
-#                     newfVals = copy.copy(fVals)
-#                     newfVals.append(fVal)
-#                     newElement = [fVal, newState, goal, blankRow-1, blankCol, newActions, newfVals]
-#                     heapq.heappush(prioQueue, newElement)
-#                     N+=1
-#             if blankRow != (len(state)-1):
-#                 stateCopy = copy.deepcopy(state)
-#                 newState = stateAfterAction(stateCopy, "D", blankRow, blankCol)
-#                 strState = str(newState)
-#                 if strState not in seenStates:
-#                     seenStates[strState] = True
-#                     hVal = calcManhattanDist(newState,goal)
-#                     newActions = copy.copy(actions)
-#                     newActions.append("D")
-#                     gVal = len(actions)
-#                     fVal = gVal + hVal
-#                     newfVals = copy.copy(fVals)
-#                     newfVals.append(fVal)
-#                     newElement = [fVal, newState, goal, blankRow+1, blankCol, newActions, newfVals]
-#                     heapq.heappush(prioQueue, newElement)
-#                     N+=1
-#             if blankCol != 0:
-#                 stateCopy = copy.deepcopy(state)
-#                 newState = stateAfterAction(stateCopy, "L", blankRow, blankCol)
-#                 strState = str(newState)
-#                 if strState not in seenStates:
-#                     seenStates[strState] = True
-#                     hVal = calcManhattanDist(newState,goal)
-#                     newActions = copy.copy(actions)
-#                     newActions.append("L")
-#                     gVal = len(actions)
-#                     fVal = gVal + hVal
-#                     newfVals = copy.copy(fVals)
-#                     newfVals.append(fVal)
-#                     newElement = [fVal, newState, goal, blankRow, blankCol-1, newActions, newfVals]
-#                     heapq.heappush(prioQueue, newElement)
-#                     N+=1
-#             if blankCol != (len(state[0])-1):
-#                 stateCopy = copy.deepcopy(state)
-#                 newState = stateAfterAction(stateCopy, "R", blankRow, blankCol)
-#                 strState = str(newState)
-#                 if strState not in seenStates:
-#                     seenStates[strState] = True
-#                     hVal = calcManhattanDist(newState,goal)
-#                     newActions = copy.copy(actions)
-#                     newActions.append("R")
-#                     gVal = len(actions)
-#                     fVal = gVal + hVal
-#                     newfVals = copy.copy(fVals)
-#                     newfVals.append(fVal)
-#                     newElement = [fVal, newState, goal, blankRow, blankCol+1, newActions, newfVals]
-#                     heapq.heappush(prioQueue, newElement)
-#                     N+=1
-#             return solver(prioQueue, seenStates, N)
+        if state == goal:
+            return (actions, fVals, N)
+        else:
+            if blankRow != 0:
+                stateCopy = copy.deepcopy(state)
+                newState = stateAfterAction(stateCopy, "U", blankRow, blankCol)
+                strState = str(newState)
+                if strState not in seenStates:
+                    seenStates[strState] = True
+                    hVal = calcManhattanDist(newState,goal)
+                    newActions = copy.copy(actions)
+                    newActions.append("U")
+                    gVal = len(actions)
+                    fVal = gVal + hVal
+                    newfVals = copy.copy(fVals)
+                    newfVals.append(fVal)
+                    newElement = [fVal, newState, goal, blankRow-1, blankCol, newActions, newfVals]
+                    heapq.heappush(prioQueue, newElement)
+                    N+=1
+            if blankRow != (len(state)-1):
+                stateCopy = copy.deepcopy(state)
+                newState = stateAfterAction(stateCopy, "D", blankRow, blankCol)
+                strState = str(newState)
+                if strState not in seenStates:
+                    seenStates[strState] = True
+                    hVal = calcManhattanDist(newState,goal)
+                    newActions = copy.copy(actions)
+                    newActions.append("D")
+                    gVal = len(actions)
+                    fVal = gVal + hVal
+                    newfVals = copy.copy(fVals)
+                    newfVals.append(fVal)
+                    newElement = [fVal, newState, goal, blankRow+1, blankCol, newActions, newfVals]
+                    heapq.heappush(prioQueue, newElement)
+                    N+=1
+            if blankCol != 0:
+                stateCopy = copy.deepcopy(state)
+                newState = stateAfterAction(stateCopy, "L", blankRow, blankCol)
+                strState = str(newState)
+                if strState not in seenStates:
+                    seenStates[strState] = True
+                    hVal = calcManhattanDist(newState,goal)
+                    newActions = copy.copy(actions)
+                    newActions.append("L")
+                    gVal = len(actions)
+                    fVal = gVal + hVal
+                    newfVals = copy.copy(fVals)
+                    newfVals.append(fVal)
+                    newElement = [fVal, newState, goal, blankRow, blankCol-1, newActions, newfVals]
+                    heapq.heappush(prioQueue, newElement)
+                    N+=1
+            if blankCol != (len(state[0])-1):
+                stateCopy = copy.deepcopy(state)
+                newState = stateAfterAction(stateCopy, "R", blankRow, blankCol)
+                strState = str(newState)
+                if strState not in seenStates:
+                    seenStates[strState] = True
+                    hVal = calcManhattanDist(newState,goal)
+                    newActions = copy.copy(actions)
+                    newActions.append("R")
+                    gVal = len(actions)
+                    fVal = gVal + hVal
+                    newfVals = copy.copy(fVals)
+                    newfVals.append(fVal)
+                    newElement = [fVal, newState, goal, blankRow, blankCol+1, newActions, newfVals]
+                    heapq.heappush(prioQueue, newElement)
+                    N+=1
+            return solver(prioQueue, seenStates, N)
 
 def solver(prioQueue, seenStates, N):
     while len(prioQueue) > 0:
