@@ -52,6 +52,7 @@ def writeOutput(filename, initial, goal, d, N, actions, fVals):
     outputFile.close()
 
 def calcManhattanDist(currState, goalState):
+    #find compare each cell in currState with goalState to find and sum all manhattan distances
     dist = 0
     for cRow in range(len(currState)):
         for cCol in range(len(currState[0])):
@@ -62,6 +63,7 @@ def calcManhattanDist(currState, goalState):
     return dist
 
 def stateAfterAction(state, action, blankRow, blankCol):
+    #Depending on which action is being taken, move the blank cell and return the modified state
     if action == "U":
         state[blankRow][blankCol],state[blankRow-1][blankCol] = state[blankRow-1][blankCol],state[blankRow][blankCol]
     elif action == "D":
@@ -76,6 +78,7 @@ def stateAfterAction(state, action, blankRow, blankCol):
 
 def solver(prioQueue, seenStates, N):
     while len(prioQueue) > 0:
+        #pop the first node in the priority queue sorted by its f value and get all of its information
         node = heapq.heappop(prioQueue)
         fVal = node[0]
         state = node[1]
@@ -86,13 +89,17 @@ def solver(prioQueue, seenStates, N):
         fVals = node[6]
 
         if state == goal:
+            #the goal has been reached so we return all the actions taken, the f values of all the nodes, and the total nodes visited
             return (actions, fVals, N)
         else:
             if blankRow != 0:
+                #if the blank space can move up, we move it by making a copy of all the relevant information to be modified
                 stateCopy = copy.deepcopy(state)
                 newState = stateAfterAction(stateCopy, "U", blankRow, blankCol)
                 strState = str(newState)
                 if strState not in seenStates:
+                    #check to make sure state has not already been visited already because this is a graph search
+                    #if the state has not been visited, then make new modifications and add new mode to priority queue
                     seenStates[strState] = True
                     hVal = calcManhattanDist(newState,goal)
                     newActions = copy.copy(actions)
@@ -105,10 +112,13 @@ def solver(prioQueue, seenStates, N):
                     heapq.heappush(prioQueue, newElement)
                     N+=1
             if blankRow != (len(state)-1):
+                #if the blank space can move down, we move it by making a copy of all the relevant information to be modified
                 stateCopy = copy.deepcopy(state)
                 newState = stateAfterAction(stateCopy, "D", blankRow, blankCol)
                 strState = str(newState)
                 if strState not in seenStates:
+                    #check to make sure state has not already been visited already because this is a graph search
+                    #if the state has not been visited, then make new modifications and add new mode to priority queue
                     seenStates[strState] = True
                     hVal = calcManhattanDist(newState,goal)
                     newActions = copy.copy(actions)
@@ -121,10 +131,13 @@ def solver(prioQueue, seenStates, N):
                     heapq.heappush(prioQueue, newElement)
                     N+=1
             if blankCol != 0:
+                #if the blank space can move left, we move it by making a copy of all the relevant information to be modified
                 stateCopy = copy.deepcopy(state)
                 newState = stateAfterAction(stateCopy, "L", blankRow, blankCol)
                 strState = str(newState)
                 if strState not in seenStates:
+                    #check to make sure state has not already been visited already because this is a graph search
+                    #if the state has not been visited, then make new modifications and add new mode to priority queue
                     seenStates[strState] = True
                     hVal = calcManhattanDist(newState,goal)
                     newActions = copy.copy(actions)
@@ -137,10 +150,13 @@ def solver(prioQueue, seenStates, N):
                     heapq.heappush(prioQueue, newElement)
                     N+=1
             if blankCol != (len(state[0])-1):
+                #if the blank space can move right, we move it by making a copy of all the relevant information to be modified
                 stateCopy = copy.deepcopy(state)
                 newState = stateAfterAction(stateCopy, "R", blankRow, blankCol)
                 strState = str(newState)
                 if strState not in seenStates:
+                    #check to make sure state has not already been visited already because this is a graph search
+                    #if the state has not been visited, then make new modifications and add new mode to priority queue
                     seenStates[strState] = True
                     hVal = calcManhattanDist(newState,goal)
                     newActions = copy.copy(actions)
@@ -152,10 +168,13 @@ def solver(prioQueue, seenStates, N):
                     newElement = [fVal, newState, goal, blankRow, blankCol+1, newActions, newfVals]
                     heapq.heappush(prioQueue, newElement)
                     N+=1
+    return False
 
 def main():
+    #get file names to be used as input and output
     inputFileName = input("Please enter the input filename: ")
     outputFileName = input("Please enter the output filename: ")
+    #initialize variables to create the first node for the initial state
     initial = []
     goal = []
     seenStates = {}
@@ -168,24 +187,30 @@ def main():
     initialVal = calcManhattanDist(state,goal)
     fVals = [initialVal]
     seenStates[str(state)] = True
-    #find blankRow and blankCol
+    #find blankRow and blankCol of initial state
     for i in range(len(state)):
         for j in range(len(state[0])):
             if state[i][j] == "0":
                 blankRow = i
                 blankCol = j
+    
+    #push the first node onto the priotity queue
     firstElement = [initialVal, state, goal, blankRow, blankCol, actions, fVals]
     heapq.heappush(H, firstElement)
 
-
+    #call the solver to find the solution, which returns the actions taken, f values, and total nodes created
     res = solver(H, seenStates, N)
+
     if res == False:
+        #the res will be false if the priority queue has no nodes left, which means it has explored everything possible from the initial state
         print("Goal could not be reached")
     else:
+        #extract all the info from the res and output it into thte designated output file
         actions = res[0]
         fVals = res[1]
         newN = res[2]
         d = len(actions)
         writeOutput(outputFileName, initial, goal, d, newN, actions, fVals)
 
+#call main to start the program
 main()
